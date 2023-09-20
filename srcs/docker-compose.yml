@@ -1,13 +1,42 @@
-version: "3.8"
+version: "3"
+
+volumes:
+  data: {}
 services:
   mariadb:
-    build: ./requirments/mariadb
-    container_name: mariadb
+    build:
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
+    restart: always
+    expose:
+      - "3306"
+    networks:
+      - intra
+    tty: true
+  nginx:
+    build:
+      context: ./requirements/nginx
+      dockerfile: Dockerfile
+    restart: always
     ports:
-      - '3306:3306'
+      - "443:443"
     volumes:
-      - db:/var/lib/mysql
-    env_file:
-      ./.env
-volumes:
-  db:
+      - data:/var/www/html
+    networks:
+      - intra
+    tty: true
+  wordpress:
+    build:
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - data:/var/www/html
+    expose:
+      - "9000"
+    networks:
+      - intra
+    tty: true
+networks:
+  intra:
+    driver: bridge
