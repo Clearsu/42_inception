@@ -2,12 +2,20 @@ version: "3"
 
 volumes:
   data: {}
+  db: {}
 services:
   mariadb:
     build:
       context: ./requirements/mariadb
       dockerfile: Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DB: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     restart: always
+    volumes:
+      - db:/var/lib/mysql
     expose:
       - "3306"
     networks:
@@ -29,6 +37,8 @@ services:
     build:
       context: ./requirements/wordpress
       dockerfile: Dockerfile
+    environment:
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     restart: always
     volumes:
       - data:/var/www/html
