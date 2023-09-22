@@ -10,8 +10,8 @@ wget \
 curl \
 php-mysql \
 php-mbstring \
-php-xml
-# sendmail
+php-xml \
+sendmail
 
 RUN mkdir /run/php
 
@@ -27,4 +27,4 @@ COPY www.conf /etc/php/7.3/fpm/pool.d/www.conf
 
 EXPOSE 9000
 
-CMD ["/usr/sbin/php-fpm7.3", "-F"]
+ENTRYPOINT ["/usr/sbin/php-fpm7.3", "-F"]
