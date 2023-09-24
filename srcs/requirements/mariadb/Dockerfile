@@ -2,7 +2,8 @@ FROM debian:buster
 
 RUN apt-get update -y && \
 apt-get upgrade -y && \
-apt-get install -y mariadb-server procps
+apt-get install -y mariadb-server procps gosu && \
+rm -rf /var/lib/apt/lists/*
 
 COPY 50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
