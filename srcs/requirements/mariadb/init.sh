@@ -5,7 +5,8 @@ if [ ! -e "/var/lib/mysql/.init_complete" ]; then
   mysql_install_db --user=mysql --datadir=/var/lib/mysql
   
   # 임시로 MariaDB를 백그라운드에서 시작합니다.
-  gosu mysql /usr/sbin/mysqld --skip-grant-tables --skip-networking &  
+  gosu mysql /usr/sbin/mysqld --skip-grant-tables --skip-networking --pid-file=/var/run/mysqld/mysqld.pid &  
+
   
   # MariaDB가 준비될 때까지 기다리기 위한 로직
   for i in {30..0}; do
@@ -25,10 +26,16 @@ if [ ! -e "/var/lib/mysql/.init_complete" ]; then
   mysql -e "FLUSH PRIVILEGES;"
 
   # 백그라운드에서 실행중인 MariaDB를 종료
-  mysqladmin -u root -p$MYSQL_ROOT_PASSWORD shutdown
+    kill -TERM $(cat /var/run/mysqld/mysqld.pid)
+    sleep 5
+  # mysqladmin -u root -p$MYSQL_ROOT_PASSWORD shutdown
+
+  if [ -f /var/run/mysqld/mysqld.pid ]; then
+      rm -f /var/run/mysqld/mysqld.pid
+  fi
 
   # MariaDB를 일반 모드로 다시 시작
-  gosu mysql /usr/sbin/mysqld --skip-networking &  
+  gosu mysql /usr/sbin/mysqld --skip-networking --pid-file=/var/run/mysqld/mysqld.pid &  
 
   # 다시 MariaDB가 준비될 때까지 기다립니다.
   for i in {30..0}; do
@@ -45,10 +52,12 @@ if [ ! -e "/var/lib/mysql/.init_complete" ]; then
   mysql -u root -p$MYSQL_ROOT_PASSWORD -e "FLUSH PRIVILEGES;"
 
   # 백그라운드에서 실행중인 MariaDB를 다시 종료
-  mysqladmin -u root -p$MYSQL_ROOT_PASSWORD shutdown
+    kill -TERM $(cat /var/run/mysqld/mysqld.pid)
+    sleep 5
+  # mysqladmin -u root -p$MYSQL_ROOT_PASSWORD shutdown
   
   touch /var/lib/mysql/.init_complete
 fi
 
 # MariaDB 서버를 정상적으로 시작
-exec gosu mysql /usr/sbin/mysqld --no-daemonize
+exec gosu mysql /usr/sbin/mysqld
