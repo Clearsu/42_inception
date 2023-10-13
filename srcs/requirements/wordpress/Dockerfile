@@ -19,7 +19,7 @@ RUN wget https://wordpress.org/latest.tar.gz && \
 tar -xvf latest.tar.gz && \ 
 mkdir -p /var/www/html/ && \
 mv wordpress/* /var/www/html/ && \
-chown -R www-data:www-data /var/www/html
+chown -R www-data:www-data /var/www/html && \
 rm -r /wordpress latest.tar.gz
 
 COPY wp-config.php /var/www/html/wp-config.php
