@@ -47,8 +47,8 @@ if [ ! -e "/var/lib/mysql/.init_complete" ]; then
   
   # 이제 일반 모드에서 권한 관련 작업을 수행합니다.
   mysql -u root -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DB;"
-  mysql -u root -p$MYSQL_ROOT_PASSWORD -e "CREATE USER '$MYSQL_USER'@'wordpress' IDENTIFIED BY '$MYSQL_PASSWORD';"
-  mysql -u root -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL ON $MYSQL_DB.* TO '$MYSQL_USER'@'wordpress';"
+  mysql -u root -p$MYSQL_ROOT_PASSWORD -e "CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
+  mysql -u root -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL ON $MYSQL_DB.* TO '$MYSQL_USER'@'%';"
   mysql -u root -p$MYSQL_ROOT_PASSWORD -e "FLUSH PRIVILEGES;"
 
   # 백그라운드에서 실행중인 MariaDB를 다시 종료
