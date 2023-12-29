@@ -8,14 +8,16 @@ services:
     build:
       context: ./requirements/mariadb
       dockerfile: Dockerfile
+      args:
+        - MYSQL_DB=${MYSQL_DB}
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      WORDPRESS_DB: ${WORDPRESS_DB}
-      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
-      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      MYSQL_DB: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     restart: always
     volumes:
-      - db:/var/lib/mysql/${WORDPRESS_DB}
+      - db:/var/lib/mysql
     expose:
       - "3306"
     networks:
@@ -38,9 +40,9 @@ services:
       context: ./requirements/wordpress
       dockerfile: Dockerfile
     environment:
-      WORDPRESS_DB: ${WORDPRESS_DB}
-      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
-      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      MYSQL_DB: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     restart: always
     volumes:
       - data:/var/www/html

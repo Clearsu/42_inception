@@ -3,7 +3,7 @@
 if [ ! -e "/var/lib/mysql/.init_complete" ]; then
   mysql_install_db --user=mysql --datadir=/var/lib/mysql
   
-  gosu mysql /usr/sbin/mysqld --skip-networking &
+  /usr/sbin/mysqld --skip-networking &
 
   for i in {30..0}; do
       if echo 'SELECT 1' | mysql &> /dev/null; then
@@ -17,9 +17,9 @@ if [ ! -e "/var/lib/mysql/.init_complete" ]; then
       exit 1
   fi
 
-  mysql -u root -e "CREATE DATABASE IF NOT EXISTS $WORDPRESS_DB;"
-  mysql -u root -e "CREATE USER '$WORDPRESS_DB_USER'@'%' IDENTIFIED BY '$WORDPRESS_DB_PASSWORD';"
-  mysql -u root -e "GRANT ALL ON $WORDPRESS_DB.* TO '$WORDPRESS_DB_USER'@'%';"
+  mysql -u root -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DB;"
+  mysql -u root -e "CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
+  mysql -u root -e "GRANT ALL ON $MYSQL_DB.* TO '$MYSQL_USER'@'%';"
   mysql -u root -e "FLUSH PRIVILEGES;"
   mysql -u root -e "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('$MYSQL_ROOT_PASSWORD');"
 
@@ -28,4 +28,4 @@ if [ ! -e "/var/lib/mysql/.init_complete" ]; then
   touch /var/lib/mysql/.init_complete
 fi
 
-exec gosu mysql /usr/sbin/mysqld
+exec /usr/sbin/mysqld
