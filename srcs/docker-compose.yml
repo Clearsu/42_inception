@@ -10,12 +10,12 @@ services:
       dockerfile: Dockerfile
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DB: ${MYSQL_DB}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_DB: ${WORDPRESS_DB}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
     restart: always
     volumes:
-      - db:/var/lib/mysql
+      - db:/var/lib/mysql/${WORDPRESS_DB}
     expose:
       - "3306"
     networks:
@@ -38,9 +38,9 @@ services:
       context: ./requirements/wordpress
       dockerfile: Dockerfile
     environment:
-      MYSQL_DB: ${MYSQL_DB}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_DB: ${WORDPRESS_DB}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
     restart: always
     volumes:
       - data:/var/www/html
