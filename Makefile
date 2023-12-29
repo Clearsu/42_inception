@@ -1,10 +1,17 @@
-all: clean re
+all: build up
 
-stop:
-	docker-compose -f srcs/docker-compose.yml down
+up: 
+	docker-compose -f srcs/docker-compose.yml up -d
 
-clean:
-	docker system prune -f
+build:
+	docker-compose -f srcs/docker-compose.yml build
 
-re:
-	docker-compose -f srcs/docker-compose.yml up --build
+prune:
+	docker system prune
+
+clean: prune
+	docker-compose -f srcs/docker-compose.yml down --rmi all -v
+
+re: clean all
+
+.PHONY: all up build prune clean re
