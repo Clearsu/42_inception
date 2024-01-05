@@ -9,9 +9,9 @@ build:
 prune:
 	docker system prune
 
-clean: prune
+clean:
 	docker-compose -f srcs/docker-compose.yml down --rmi all -v
 
-re: clean all
+re: clean prune all
 
 .PHONY: all up build prune clean re
