@@ -28,4 +28,4 @@ if [ ! -e "/var/lib/mysql/.init_complete" ]; then
   touch /var/lib/mysql/.init_complete
 fi
 
-exec /usr/sbin/mysqld
+exec "$@"
