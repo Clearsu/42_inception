@@ -3,7 +3,7 @@ FROM debian:bullseye
 RUN apt-get update -y \
 && apt-get upgrade -y \
 && apt-get -y install \
-php7.3 \
+php7.4 \
 php-fpm \
 php-cli \
 php-mysql \
@@ -31,4 +31,4 @@ WORKDIR /var/www/html
 
 ENTRYPOINT ["/bin/bash", "/init.sh"]
 
-CMD ["/usr/sbin/php-fpm7.3", "-F"]
+CMD ["/usr/sbin/php-fpm7.4", "-F"]
