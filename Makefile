@@ -20,12 +20,14 @@ up:
 	docker-compose -f srcs/docker-compose.yml up -d
 
 build:
+	mkdir -p ./src/data/database ./src/data/website
 	docker-compose -f srcs/docker-compose.yml build
 
 prune:
 	docker system prune
 
 clean:
+	rm -rf ./src/data
 	docker-compose -f srcs/docker-compose.yml down --rmi all -v
 
 fclean: clean prune
